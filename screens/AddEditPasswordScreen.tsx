@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
+import GrowingHeader from "../components/GrowingHeader";
+import colors from "../styles/colors";
 
 export default function AddEditPasswordScreen({ route, navigation }: any) {
   const [title, setTitle] = useState("");
@@ -44,6 +46,10 @@ export default function AddEditPasswordScreen({ route, navigation }: any) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <GrowingHeader
+        title={passwordId ? "Edit Password" : "Add Password"}
+        onBackPress={() => navigation.goBack()}
+      />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.inner}
@@ -81,7 +87,7 @@ export default function AddEditPasswordScreen({ route, navigation }: any) {
             <Ionicons
               name={showPassword ? "eye-off" : "eye"}
               size={24}
-              color="#4a90e2"
+              color={colors.gold}
             />
           </TouchableOpacity>
         </View>
@@ -104,11 +110,12 @@ export default function AddEditPasswordScreen({ route, navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: colors.lightGrey,
   },
   inner: {
     flex: 1,
     padding: 20,
+    paddingTop: 100,
   },
   input: {
     backgroundColor: "white",
@@ -123,6 +130,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 5,
     marginBottom: 15,
+    paddingRight: 15,
   },
   passwordInput: {
     flex: 1,
@@ -133,7 +141,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   generateButton: {
-    backgroundColor: "#4a90e2",
+    backgroundColor: colors.gold,
     borderRadius: 5,
     padding: 15,
     alignItems: "center",
@@ -144,7 +152,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   saveButton: {
-    backgroundColor: "#4a90e2",
+    backgroundColor: colors.gold,
     borderRadius: 5,
     padding: 15,
     alignItems: "center",

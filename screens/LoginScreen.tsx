@@ -10,6 +10,7 @@ import {
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import colors from "../styles/colors";
 
 export default function LoginScreen({ navigation }: { navigation: any }) {
   const [email, setEmail] = useState("");
@@ -61,7 +62,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: colors.darkGrey,
   },
   inner: {
     flex: 1,
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#333",
+    color: colors.white,
   },
   input: {
     width: "100%",
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     height: 50,
-    backgroundColor: "#4a90e2",
+    backgroundColor: colors.gold,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,

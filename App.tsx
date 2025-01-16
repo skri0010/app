@@ -1,28 +1,38 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import LoginScreen from "./screens/LoginScreen";
 import PasswordListScreen from "./screens/PasswordListScreen";
 import AddEditPasswordScreen from "./screens/AddEditPasswordScreen";
+import { Animated, ScrollView, Text } from "react-native";
+import colors from "./styles/colors";
 
-const Stack = createNativeStackNavigator();
+type RootStackParamList = {
+  Login: undefined;
+  PasswordList: undefined;
+  AddEditPassword: { passwordId?: string };
+};
 
 export default function App() {
+  const Stack = createNativeStackNavigator<RootStackParamList>();
+  const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: colors.lightGrey,
+      primary: colors.darkGrey,
+    },
+  };
+
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
+    <SafeAreaProvider style={{ backgroundColor: colors.lightGrey }}>
+      <NavigationContainer theme={MyTheme}>
         <Stack.Navigator
           initialRouteName="Login"
           screenOptions={{
-            headerStyle: {
-              backgroundColor: "#4a90e2",
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
+            headerShown: false,
           }}
         >
           <Stack.Screen
@@ -46,7 +56,8 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-      {/* <StatusBar style="auto" /> */}
+
+      <StatusBar style="auto" />
     </SafeAreaProvider>
   );
 }

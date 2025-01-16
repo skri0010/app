@@ -1,13 +1,15 @@
 import React from "react";
 import {
   View,
-  Text,
-  FlatList,
   TouchableOpacity,
   StyleSheet,
+  Animated,
+  Text,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import GrowingHeader from "../components/GrowingHeader"; // Adjust the path based on your file structure
+import colors from "../styles/colors";
 
 const dummyPasswords = [
   { id: "1", title: "Gmail", username: "user@gmail.com" },
@@ -17,7 +19,7 @@ const dummyPasswords = [
   { id: "5", title: "GitHub", username: "user@github.com" },
   { id: "6", title: "Instagram", username: "user@instagram.com" },
   { id: "7", title: "Reddit", username: "user@reddit.com" },
-  { id: "8", title: "Twitch", username: "user@twitter.com" },
+  { id: "8", title: "Twitch", username: "user@twitch.com" },
   { id: "9", title: "Pinterest", username: "pinter" },
 ];
 
@@ -26,6 +28,8 @@ export default function PasswordListScreen({
 }: {
   navigation: any;
 }) {
+  const scrollY = React.useRef(new Animated.Value(0)).current;
+
   const renderItem = ({ item }: { item: any }) => (
     <TouchableOpacity
       style={styles.item}
@@ -35,7 +39,7 @@ export default function PasswordListScreen({
       accessibilityLabel={`Edit password for ${item.title}`}
     >
       <View style={styles.itemContent}>
-        <Ionicons name="lock-closed" size={24} color="#4a90e2" />
+        <Ionicons name="lock-closed" size={24} color={colors.gold} />
         <View style={styles.itemText}>
           <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.username}>{item.username}</Text>
@@ -47,12 +51,28 @@ export default function PasswordListScreen({
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
+      {/* Reusable Growing Header */}
+      <GrowingHeader
+        scrollY={scrollY}
+        title="Your Passwords"
+        enableGrowth={true}
+        onBackPress={() => navigation.goBack()}
+      />
+
+      {/* Password List */}
+      <Animated.FlatList
         data={dummyPasswords}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
+        scrollEventThrottle={16}
       />
+
+      {/* Add Button */}
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => navigation.navigate("AddEditPassword")}
@@ -67,20 +87,21 @@ export default function PasswordListScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#37393e", // Light background
   },
   list: {
     padding: 16,
+    paddingTop: 200, // Accounts for the header height
   },
   item: {
-    backgroundColor: "white",
+    backgroundColor: colors.darkGrey, // White for items
     borderRadius: 8,
     padding: 16,
     marginBottom: 16,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    shadowColor: "#000",
+    shadowColor: colors.gold,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -96,11 +117,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
+    color: colors.white, // Dark gray for high contrast text
   },
   username: {
     fontSize: 14,
-    color: "#666",
+    color: colors.gold, // Muted gray for secondary text
     marginTop: 4,
   },
   addButton: {
@@ -110,7 +131,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#4a90e2",
+    backgroundColor: colors.gold, // Accent blue for the button
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",
